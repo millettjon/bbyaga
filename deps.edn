@@ -1,0 +1,5 @@
+;; - deps.edn must be present for bb to use this as a dep
+;; - babashka does not look for bb.edn in libraries
+{:paths ["src"]
+ :deps {#_ #_com.github.liquidz/antq {:mvn/version "RELEASE"}
+        dev.nubank/docopt {:mvn/version "0.6.1-fix7"}}}

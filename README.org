@@ -1,0 +1,4 @@
+placeholder for common babashka libs and tasks
+
+* TASKS
+- get clojure to use deps.edn from this library when running tasks from a bb project
