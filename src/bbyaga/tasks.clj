@@ -1,5 +1,6 @@
 (ns bbyaga.tasks
   (:require
+   [babashka.fs :as fs]
    [babashka.tasks :refer [clojure]]
    [babashka.wait :as wait]))
 
@@ -31,3 +32,33 @@
                     (spit ".nrepl-port" nrepl-port)
                     (.deleteOnExit (File. ".nrepl-port"))
                     (.waitFor proc)))
+
+(def WRAPPER
+  "#!/usr/bin/env bash
+
+# Generic wrapper to run a bb task from this project.
+BB_TASK=\"$(basename \"$0\")\"
+BB_CONFIG=\"$(cd \"$(dirname $(readlink --canonicalize \"$0\"))/..\" && pwd)/bb.edn\"
+exec bb --config \"${BB_CONFIG}\" run \"$BB_TASK\" \"$@\"
+")
+
+(defn wrap
+  "Generate a bin wrappers for one or more tasks."
+  [& args]
+  (let [bin     (-> "bin" fs/path str)
+        wrapper (->> ".task-wrapper" (fs/path bin) str)]
+
+    ;; Create bin directory if doesn't exist.
+    (or (fs/exists? bin)
+        (fs/create-dir bin))
+
+    ;; Create the generic wrapper file.
+    (spit wrapper WRAPPER)
+    (fs/set-posix-file-permissions wrapper "rwxr-xr-x")
+
+    ;; Create symlinks for each task to wrap.
+    (doseq [task args
+            :let [source (fs/path bin task)]]
+      (println "Generating wrapper for" task)
+      (fs/delete-if-exists source)
+      (fs/create-sym-link source ".task-wrapper"))))
