@@ -2,3 +2,17 @@ placeholder for common babashka libs and tasks
 
 * TASKS
 - get clojure to use deps.edn from this library when running tasks from a bb project
+- libraries https://github.com/babashka/babashka/blob/master/doc/projects.md#libraries
+  - cognitect test runner
+    https://github.com/cognitect-labs/test-runner
+  - portal
+  - aero
+  - pretty - ansi font coloring
+    https://github.com/babashka/babashka/blob/master/doc/projects.md#libraries
+  - clojure-term-colors
+    https://github.com/trhura/clojure-term-colors
+- nativity - compile bb scripts using graal
+  https://github.com/MnRA/nativity
+- interdep
+  https://github.com/alidlorenzo/interdep
+  - sort of like polylith

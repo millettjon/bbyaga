@@ -1,0 +1,12 @@
+{:paths ["src"]
+ :deps {}
+
+ :tasks
+ {outdated bbyaga.task/outdated
+  nrepl    bbyaga.task/nrepl}
+
+ #_ #_:aliases {:test
+           {:extra-paths ["test"]}}}
+
+;; - ? how to check deps here if deps are in deps.edn?
+;;   -? load self as library?
