@@ -7,34 +7,25 @@
    [portal.api         :as p])
   (:refer-clojure :exclude [test]))
 
-;; Ref: https://github.com/babashka/babashka/discussions/1122
-;; -? how to have clojure load deps from bbyaga/deps.edn but still operate on local project?
-;;    - can find directory if loaded from local root
-;;    - shared bb fn that loads deps.edn from local root or jar?
-;;    - ? how does jarvis do it?
-;; -? dogfood: can it run oudated on iteself?
+;; Note: antq is not compatible with babashka (Unable to resolve classname: org.eclipse.aether.RepositorySystemSession)
 (defn outdated
   "Check for outdated dependencies."
   [& _args]
   (let [deps '{:deps {com.github.liquidz/antq {:mvn/version "RELEASE"}
                       org.slf4j/slf4j-nop     {:mvn/version "RELEASE"}}}]
     (clojure
+     ;; Use nil deps.edn to prevent clojure from loading deps.edn which has bb only deps.
+     ;; Note: -Sdeps-file is only available in babashka.deps
+     "-Sdeps-file" nil
      "-Sdeps" (str deps)
      "-M" "-m" "antq.core")))
 
-;; -? how to run this?
-;; -? add to bb --nrepl-server command line?
-;; -? does bb look for user.clj?
-;; -? pass preloads env to bb --nrepl-server?
-;; (portal)
-;; BABASHKA_PRELOADS="(require '[portal.api :as p]) (p/open)"
 (defn portal
   []
   (p/open)
   (add-tap p/submit)
   (tap> ::hello))
 
-;; TODO - ? add --portal as a command line option?
 ;; -? why does this not use babashka.process?
 ;; -? why does this take *command-line-args*?
 ;; -? is there a way for cider to send to portal?

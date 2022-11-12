@@ -1,11 +1,8 @@
-;; - deps.edn must be present for bb to use this as a dep
-;; - babashka does not look for bb.edn in libraries
+;; When bb loads libs, it looks for deps.edn and ignores bb.edn.
 {:paths ["src"]
- :deps  {#_#_com.github.liquidz/antq {:mvn/version "RELEASE"}
-         dev.nubank/docopt           {:mvn/version "0.6.1-fix7"}
-         djblue/portal               {:mvn/version "0.27.0"}
+ :deps  {dev.nubank/docopt           {:mvn/version "0.6.1-fix7"}
+         djblue/portal               {:mvn/version "0.34.2"}
 
-         ;; including this here causes an error when outdated is run from inside bbyaga
-         ;; it does work if outdated is from a project that uses this as a dep
-         #_#_org.babashka/spec.alpha {:git/url "https://github.com/babashka/spec.alpha"
-                                      :git/sha "1a841c4cc1d4f6dab7505a98ed2d532dd9d56b78"}}}
+         ;; Note: This is not compatible with clojure.
+         org.babashka/spec.alpha {:git/url "https://github.com/babashka/spec.alpha"
+                                  :git/sha "8df0712896f596680da7a32ae44bb000b7e45e68"}}}
