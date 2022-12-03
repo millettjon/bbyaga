@@ -1,8 +1,9 @@
 ;; When bb loads libs, it looks for deps.edn and ignores bb.edn.
 {:paths ["src"]
  :deps  {dev.nubank/docopt           {:mvn/version "0.6.1-fix7"}
-         djblue/portal               {:mvn/version "0.34.2"}
+         djblue/portal               {:mvn/version "0.35.0"}
 
          ;; Note: This is not compatible with clojure.
+         ;; TODO: remove this as it is pre-bundled with bb 1.0.167
          org.babashka/spec.alpha {:git/url "https://github.com/babashka/spec.alpha"
-                                  :git/sha "8df0712896f596680da7a32ae44bb000b7e45e68"}}}
+                                  :git/sha "1d9df099be4fbfd30b9b903642ad376373c16298"}}}
