@@ -15,3 +15,7 @@ placeholder for common babashka libs and tasks
 - interdep
   https://github.com/alidlorenzo/interdep
   - sort of like polylith
+
+* NOTES
+- if bb can't download deps locally, run:
+  clj -X:deps tree

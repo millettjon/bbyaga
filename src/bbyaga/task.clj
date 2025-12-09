@@ -1,22 +1,18 @@
 (ns bbyaga.task
   (:require
-   [babashka.fs        :as fs]
-   [babashka.tasks     :refer [clojure]]
-   [babashka.wait      :as wait]
-   [bbyaga.task.test   :as test]
-   [portal.api         :as p])
+   [babashka.fs      :as fs]
+   [babashka.tasks   :refer [clojure]]
+   [babashka.wait    :as wait]
+   [bbyaga.task.test :as test]
+   [portal.api       :as p])
   (:refer-clojure :exclude [test]))
 
-;; Note: antq is not compatible with babashka (Unable to resolve classname: org.eclipse.aether.RepositorySystemSession)
 (defn outdated
   "Check for outdated dependencies."
   [& _args]
   (let [deps '{:deps {com.github.liquidz/antq {:mvn/version "RELEASE"}
                       org.slf4j/slf4j-nop     {:mvn/version "RELEASE"}}}]
     (clojure
-     ;; Use nil deps.edn to prevent clojure from loading deps.edn which has bb only deps.
-     ;; Note: -Sdeps-file is only available in babashka.deps
-     "-Sdeps-file" nil
      "-Sdeps" (str deps)
      "-M" "-m" "antq.core")))
 
@@ -36,6 +32,7 @@
         pb         (doto (ProcessBuilder. (into ["bb"
                                                  "--nrepl-server" (str nrepl-port)]
                                                 *command-line-args*))
+                     ;; FIXME avoid preloading portal
                      (-> .environment (.put "BABASHKA_PRELOADS" "((requiring-resolve 'bbyaga.task/portal))"))
                      (.redirectOutput java.lang.ProcessBuilder$Redirect/INHERIT))
         proc       (.start pb)]

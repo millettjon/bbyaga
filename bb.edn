@@ -1,11 +1,8 @@
 {:paths ["src"]
 
  ;; Include deps from deps.edn when running bb from inside bbyaga repo.
- :deps {local/deps {:local/root "."}}
+ :deps {bbyaga/deps {:local/root "."}}
 
  :tasks
  {outdated bbyaga.task/outdated
-  nrepl    bbyaga.task/nrepl}
-
- #_ #_:aliases {:test
-           {:extra-paths ["test"]}}}
+  nrepl    bbyaga.task/nrepl}}
